@@ -6,7 +6,7 @@ class AppleDevice
     // $RAM; //Error
 
     public $RAM; // public is a visability marker, visability markers are var, public, private & protected
-    // var and pyblic are the same, var is old and public is new
+    // var and public are the same, var is old and public is new
     public $screenSize;
     public $memory;
     public $color;
@@ -160,3 +160,20 @@ $sony = new SonyDevice();
 print_r($sony);
 echo '<br>';
 echo $sony->usergetOs();
+
+echo "-----------------------------------------------------------------------<br>";
+
+abstract class bluePrint
+{
+    // abstract method without body (must be declared in the children)
+    abstract public function printOut();
+
+    // Normal method - bad practice
+    public function printOut2()
+    {
+        echo "This is a normal method";
+    }
+
+    // public $message;
+    abstract public function printOut3($message);
+}
