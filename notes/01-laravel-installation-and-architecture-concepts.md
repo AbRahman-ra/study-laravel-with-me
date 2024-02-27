@@ -39,8 +39,8 @@
 2. The entry point for our Laravel application is only `public/index.php` file
    - The `public` directory is the document root. Any files that I need the client (the broweser) to access shall be located here like frontend JS, CSS, Images, etc...
 3. The `index.php` file will include `vendor/autoload.php`
-   - The `autoload.php` file [and the whole `vendor` directory] is created by composer. Its function is to include the files that have classes when needed automatically instead of including all the files
-   - The autoload file [composer] can reach to the packages thanks to `psr-4`: an agreed standard between packages and composer to easily autoload packages. It simply says that the file name must be the same as the class name
+   - The `autoload.php` file [and the whole `vendor` directory] is created by composer. Its function is to include the files that have classes when needed automatically instead of including all the files (only need to `use namespaces` and autoload will include the fiels for you)
+   - The autoload file [composer] can reach to the packages thanks to `psr-4`: an agreed standard between packages and composer to easily autoload packages. It simply says that the file name must be the same as the class name, and the namespace name must be the same as the directory name
    - Namespaces are containers for classes to avoid conflicts in classes' names
 4. The `index.php` file will inclide `bootstrap/app.php` which is the app service container (app class instance)
 5. The `app.php` file will include `App/Http/kernel.php` that prepares the environments for the requests
