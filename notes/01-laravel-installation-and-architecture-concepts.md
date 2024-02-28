@@ -89,11 +89,11 @@
 - We need to tell Laravel that this Facade Class corrosponds to this object
 - For example, when we access `routes/web.php` we find this code
    
-   ```php
-   Route::get('/', function() {
+  ```php
+  Route::get('/', function() {
     return view('welcome');
-   });
-   ```
+  });
+  ```
 
    In this code, `Route` is a facade class for the `$router` object. The router object is located in the `App` Service Container, we can also write the above code using the router object like this
 
