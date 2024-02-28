@@ -6,7 +6,7 @@
   - `public`: can be accessed from anywhere (outside the instance)
   - `protected`: can be accessed from the class and its subclasses only
   - `private`: can be accessed from the instance only
-  - `var`: same as `public` but ended since PHP 4
+  - `var`: same as `public` but ended since PHP 4 (still supported but no one use it)
   - More on this later with Elzero OOP course
 - In PHP OOP, we use `->` instead of `.` because `.` in PHP is already used for concatenation
 - Inside the class methods, we usually return `$this` to allow object chaining
@@ -18,10 +18,10 @@ $person->setName('Ahmed')->changePassword('1234567890')->createBlaBla('test');
 
 - `setName`, `changePassword` & `createBlaBla` are all methods inside the `Person` class. so we return `$this` to allow reusing the instance again in different methods
 - Properties must have an access , while methods don't (their default is set to `public`)
-- Properties values are either null or a primitive data;, to use non-primitive data we can define the variables inside the constructor function
+- Properties values are either null or a primitive data, to use non-primitive data we can define the variables inside the constructor function
 - We can't use `$this` keyword with static method. We use `self` instead. Also, we use the `$` for property names associated with self
   - We put the `$` after the `self` to distinguish between the static property and the constant
-  - The difference between `static` property and `const` property is that I can change the `static` value but I can't change the `const` value (both are class members not instance members)
+  - The difference between `static` property and `const` property is that I can change the `static` value but I can't change the `const` value (both are class members not instance members, i.e. static)
 - To access static properties we can do this using two ways
   - `ClassName::propertyName`
   - `$instance::$propertyName` (if any of both handsides is static, we directly use the scope resolution), this approach is rare in use
@@ -30,7 +30,7 @@ $person->setName('Ahmed')->changePassword('1234567890')->createBlaBla('test');
 ```php
 $person = new Person();
 $person::$eyeColor = 'green';
-$person2 = new Person; // you can write it both ways
+$person2 = new Person; // you can write it both ways (with & without parantheses)
 $person2::$eyeColor = 'blue';
 
 echo $person::$eyeColor;
@@ -44,7 +44,7 @@ class Person
     private static $password;
     public function changePassword(string $password)
     {
-        $this->password = $password;
+        self::$password = $password;
         return $this;
     }
 
@@ -57,14 +57,14 @@ class Person
 
 ## Including a File in PHP
 
-- The difference between `include` & `require` is that when `include` doesn't file the file, it gives a warning and then completes the execution of the rest of the code. But `require` exits the app with a fetal error
-- The magic constants `__DIR__`, `__FILE__`, `DIRECTORY_SEPARATOR`, etc... are called magic because they are constants but their value changes depending on their position
+- The difference between `include` & `require` is that when `include` doesn't find the file, it gives a warning and then completes the execution of the rest of the code. But `require` exits the app with a fetal error
+- The magic constants `__DIR__`, `__FILE__`, `__LINE__`, `DIRECTORY_SEPARATOR`, etc... are called magic because they are constants but their value changes depending on their position
 - Assume we want to include two classes that have the same name in the same `app.php` file
   - PHP will not allow us to do so
   - Motivation for namespaces
   - we write in the beginning of the code `namespace X`
   - This allows us to define classes, constants & functions with the same name without conflicts
-  - If namespace is not mentioned, it's set to public/global namespace
+  - If namespace is not mentioned, it's set to public (global) namespace
 - To include a constant in PHP there are two ways
   - `define('NAME', value);`
   - `const NAME = value;`
@@ -87,13 +87,13 @@ The error is because PHP thinks that `A` is a namespace lying under `C` which is
 $person = new \A\Person();
 ```
 
-This is very similar to linux when you're inside a folder (say `Downloads`), and you want to go to home, so you wrote
+This is very similar to linux when you're inside a folder (say `Downloads`), and you want to go to `home`, so you wrote
 
 ```bash
 cd home
 ```
 
-You will get an error because the executer is seeking a folder called `home` inside the current directory. To specifiy the real `home` directory you correct the code by writing
+You will get an error because the executer is seeking a folder called `home` inside the current directory (relative path). To specifiy the real `home` directory (absolute path), you correct the code by writing
 
 ```bash
 cd /home
@@ -121,17 +121,17 @@ $person2 = new PersonB();
 - We can use functions or constants and not only classes by writing `use function <nameSpace>\<functionOrConstName>`
 - PHP looks for functions and constants in the current namespace, if not found, it will look for it in the global namespace.
 - However, in classes, PHP looks for the classes only in the current namespace, if it's not found, it will throw error
-- To import a class from the global namespace, write `\` before its name, or write `use ClassName`
+- To import a class from the global namespace, write `\` before its name in its instantiation, or write `use ClassName` to load it
 
 ## Autoload
 
 - PSR (PHP Standard Recommendations)
-- Using the PSR-4, let's simulate the autoload file
+- Using the PSR-7, let's simulate the autoload file
 
 ```php
 function load_class($className)
 {
-    include __DIR__.DIRECTORY_SEPARATOR.$className.'.php';
+  include __DIR__.DIRECTORY_SEPARATOR.$className.'.php';
 }
 
 spl_autoload_register('load_class');
@@ -140,6 +140,13 @@ spl_autoload_register('load_class');
 - `spl_autoload_register` is a function that registeres a class loader in the `autoload.php` file.
 - We can pass the callback in multiple ways
   - The whole function without name as a closure argument
+
+  ```php
+  spl_autoload_register(function ($className) {
+    include __DIR__.DIRECTORY_SEPARATOR.$className.'.php';
+  });
+  ```
+
   - The function name as a string
   - An array containing the class instance and the method name (`[classInstance, 'methodName']`)
   - If the method is static, the same array but the first item is just the class name as a string (`['<nameSpace>\className', 'StaticMethodName']`)
@@ -190,7 +197,7 @@ class Sub extends Super
 
     public static function sayHello()
     {
-        $hello = parent::sayHello();
+        $helloParent = parent::sayHello();
         echo "Hello from the Parent";
     }
 }
