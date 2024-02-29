@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\View;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        return Response::view('dashboard.index');
-    }
+  public function index()
+  {
+    return Response::view('dashboard.index');
+  }
 }

@@ -19,4 +19,7 @@ In this Repo, I share my notes studying Laravel from [Eng. Mohammed Safadi Larav
 
 ## Logs
 
+- [x] Lesson 4
+- [x] Lesson 3
+- [x] Lesson 2
 - [x] Lesson 1
