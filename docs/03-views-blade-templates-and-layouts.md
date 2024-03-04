@@ -50,7 +50,7 @@
 
 ## Blade Introduction
 
-- Blade is a template engine that enables us to write easy code withoup PHP
+- Blade is a template engine that enables us to write easy code without too much PHP
 - Assume I changed the above route to something like this
   ```php
   Route::get('/dashboard/index', [DashboardController::class, 'index']);

@@ -75,7 +75,7 @@
 
 ## Base64 Encoding
 
-- Base64 encoding is neither hashing or description, it's just a way to represent strings (like binary & decimal numbering systems)
+- Base64 encoding is neither hashing nor encryption, it's just a way to represent strings (like binary & decimal numbering systems)
 - The base64 encoded string can be a character (letter), a number, a `+` and a `/` only
 - To encode a string from utf8 (normal string) to base64, follow these steps
   1. Find the [ASCII value](https://www.ascii-code.com/) for each letter in the string

@@ -13,13 +13,13 @@
 
 - Project: Multi Vendor Store
 - Assume we have categories table for the products, how can we handle nesting?
-- If we have a category (e.g clothes), we can have categories inside that category (men, women), and even inside the subcategory we can have another sub subcategory (teens, kids, adults, plus-size). So, instead of creating `categories`, `sub_categories`, `sub_sub_categories`, ...etc. We can create one table `categories` and we add a nullable column `parent_id` which is a forign key referring to the super (parent) category id on the same table
+  - If we have a category (e.g clothes), we can have categories inside that category (men, women), and even inside the subcategory we can have another sub subcategory (teens, kids, adults, plus-size). So, instead of creating `categories`, `sub_categories`, `sub_sub_categories`, ...etc. We can create one table `categories` and we add a nullable column `parent_id` which is a forign key referring to the super (parent) category id on the same table
 - We will assume a one-to-many relationship between the category and the product (category has many products, product has one category)
 - Why do we use the `id`s of other tables as foreign keys? Why don't we make the name unique and we make it directly the primary key and foreign key in other tables instead of id?
   - Because if the user changed the name, we will have to go through all the tables and change it, but the id is inaccessable by the user so it's safer to link with it
 - Let's create an `orders` table
   - How can we document the products that was ordered?
-  - If we put the order info including the products baught, it will be a problem because the order_id(PK) will increment
+  - If we put the order info including the products baught, it will be a problem because the `order_id (PK)` will increment
   - We can't put the order details as an array/JSON in the table because it will be harder to query
   - The optimized solution is to create 2 tables `orders` & `orders_items`
 
@@ -84,7 +84,7 @@ id BIGINT UNSIGNED PRIMARY KEY AUTO INCREMENT
 $table->bigInteger('id')->unsigned()->autoIncrement()->primary();
 ```
 
-- Since the `autIncrement` is a primary key by default, we can remove the last method. Also, we can merge the `unsigned()` with the `bigInteger()` using `unsignedBigInteger()` method
+- Since the `autoIncrement` is a primary key by default, we can remove the last method. Also, we can merge the `unsigned()` with the `bigInteger()` using `unsignedBigInteger()` method
 
 ```php
 $table->unsignedBigInteger('id')->autoIncrement();
@@ -138,7 +138,7 @@ $table->foreignId('parent_id')->constrained('categories','id')->nullable(); // S
 
 | category_id | parent_id | name |
 | --- | --- | --- |
-| 1 | NULL | clothes |
+| 1 | `NULL` | clothes |
 | 2 | 1 | for her |
 | 3 | 2 | kids |
 
@@ -164,7 +164,7 @@ In the above snippet, the `nullable()` will not work and it will result an error
 - To rollback all migrations, we write `php artisan migrate:reset`
 - `php artisan migrate:refresh` is equivalent to running `php artisan migrate:reset` & `php artisan migrate` together
 - Note that `refresh`, `rollback` & `reset` functions are calling the `down()` method. Unlike `php artisan migrate:fresh` which is dropping the tables no matter what's inside the `down()` method then migrates the files again
-- If we got an error that the foreign key is ling, that's because the unique fields creates indexes in the database and the maximum index length is by default is 191 characters, we can solve this in many ways
+- If we got an error that the foreign key is long, that's because the unique fields creates indexes in the database and the maximum index length is by default is 191 characters, we can solve this in many ways
   - Specify the table engine to be `InnoDB`
   - Encdoe the database using `utf8` instead of `utf8mb4`
   - In `config/databse.php` go for keys `charset`, `collation` & `engine` inside the `connections`
@@ -177,28 +177,28 @@ In the above snippet, the `nullable()` will not work and it will result an error
 - The model class is using `HasFactory` trait
 - If I didn't follow Laravel standards, I will configure my table in the model file
   - For example, if I created a table named `stores_info` instead of `stores`. I must configure and point out that this model is corrosponding to this table in the model file
-```php
-protected $table = 'stores_info';
-```
-- Similarly, if the table is in another database connection (not the default one), I will define this snippet
-```php
-protected $connection = '<connectionNameFromConfig/DatabaseFile>';
-```
-- Laravel assumes the primary key is always a field named `id`. If it's something else, we can define it as well
-```php
-protected $primaryKey = 'user_id';
-```
-- If the primary key is something like `uuid` which is not auto-incrementing, we can configure that too, `incrementing` & `timestamps` are the only public properties, all others are protected
-```php
-public $incrementing = false;
-```
-- If I don't need timestamps anymore, deleting them from the migrations is not enough, because this will result an error as Laravel will try to inject the columns even if the fields are deleted. So, we prevent laravel from injecting them by disabling the `timestamps` property
-```php
-public $timestamps = false;
-```
-- If we changed the names of `created_at` & `updated_at` fields, we shall add them but as constants to the model
-```php
-const CREATED_AT = 'created_on';
-const UPDATED_AT = 'updated_on';
-```
-- Many other properties can be discovered from the `Model` class
+    ```php
+    protected $table = 'stores_info';
+    ```
+  - Similarly, if the table is in another database connection (not the default one), I will define this snippet
+    ```php
+    protected $connection = '<connectionNameFromConfig/DatabaseFile>';
+    ```
+  - Laravel assumes the primary key is always a field named `id`. If it's something else, we can define it as well
+    ```php
+    protected $primaryKey = 'user_id';
+    ```
+  - If the primary key is something like `uuid` which is not auto-incrementing, we can configure that too, `incrementing` & `timestamps` are the only public properties, all others are protected
+    ```php
+    public $incrementing = false;
+    ```
+  - If I don't need timestamps anymore, deleting them from the migrations is not enough, because this will result an error as Laravel will try to inject the columns even if the fields are deleted. So, we prevent laravel from injecting them by disabling the `timestamps` property
+    ```php
+    public $timestamps = false;
+    ```
+  - If we changed the names of `created_at` & `updated_at` fields, we shall add them but as constants to the model
+    ```php
+    const CREATED_AT = 'created_on';
+    const UPDATED_AT = 'updated_on';
+    ```
+  - Many other properties can be discovered from the `Model` class
