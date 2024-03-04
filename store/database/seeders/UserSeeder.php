@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -24,10 +25,6 @@ class UserSeeder extends Seeder
       'phone' => '+97300000000'
     ]);
 
-    DB::table('users')->insert([
-      'name' => 'admin',
-      'email' => 'admin@gmail.com',
-      'password' => Hash::make('admin'),
-    ]);
+    UserFactory::new()->count(40)->create();
   }
 }

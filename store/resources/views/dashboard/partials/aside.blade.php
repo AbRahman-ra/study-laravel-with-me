@@ -14,7 +14,7 @@
         <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block">{{ Auth::user()->name?? "guest" /*$user->name*/ }}</a>
       </div>
     </div>
 
@@ -66,6 +66,13 @@
               <span class="right badge badge-danger">New</span>
             </p>
           </a>
+        </li>
+        <li class="nav-item">
+          <form action="{{ route('logout') }}" method="POST">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="submit" value="logout">
+            <i class="nav-icon fas fa-th"></i>
+          </form>
         </li>
       </ul>
     </nav>
