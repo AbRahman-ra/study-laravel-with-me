@@ -14,8 +14,8 @@ return new class extends Migration
     Schema::create('categories', function (Blueprint $table) {
       $table->id();
       $table->foreignId('parent_id')
-        ->references('id')
         ->nullable()
+        ->references('id')
         ->on('categories')
         ->nullOnDelete();
       /* $table->foreignId('parent_id')
@@ -26,6 +26,7 @@ return new class extends Migration
       $table->string('name');
       $table->string('slug')->unique();
       $table->enum('status', ['active', 'inactive'])->default('active');
+      $table->string('image_url')->nullable();
       $table->timestamps();
     });
   }
